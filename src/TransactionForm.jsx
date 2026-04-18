@@ -24,12 +24,12 @@ function TransactionForm({ categories, onAdd }) {
   };
 
   return (
-    <div className="add-transaction">
-      <h2>Add Transaction</h2>
+    <section className="add-transaction">
+      <div className="section-label" data-numeral="iii.">Record an entry</div>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Description"
+          placeholder="Description of the entry…"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -48,9 +48,9 @@ function TransactionForm({ categories, onAdd }) {
             <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
-        <button type="submit">Add</button>
+        <button type="submit">Inscribe</button>
       </form>
-    </div>
+    </section>
   );
 }
 

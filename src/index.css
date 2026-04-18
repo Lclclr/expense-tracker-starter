@@ -1,11 +1,64 @@
+:root {
+  --paper: #f3ece0;
+  --paper-raised: #faf5eb;
+  --paper-sunken: #ece3d2;
+  --ink: #1a1814;
+  --ink-soft: #3d372e;
+  --muted: #7a7162;
+  --rule: #d4c9b5;
+  --rule-soft: #e2d9c7;
+  --green: #2d5a3d;
+  --green-deep: #1f4129;
+  --oxblood: #8b3a1f;
+  --oxblood-deep: #6a2a14;
+  --gold: #b8935a;
+  --gold-soft: #d4b88a;
+
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-body: "Instrument Sans", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  color-scheme: light;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html,
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184, 147, 90, 0.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(45, 90, 61, 0.06), transparent 70%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv01", "cv11";
+}
+
+::selection {
+  background: var(--green);
+  color: var(--paper-raised);
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select {
+  font-family: inherit;
+  color: inherit;
 }

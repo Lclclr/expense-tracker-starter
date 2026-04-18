@@ -7,6 +7,21 @@ import TransactionList from './TransactionList'
 
 const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
 
+const formatIssue = () => {
+  const d = new Date();
+  const vol = d.getFullYear() - 2025 + 1;
+  const issue = d.getMonth() + 1;
+  return `Vol. ${String(vol).padStart(2, "0")} · No. ${String(issue).padStart(2, "0")}`;
+};
+
+const formatToday = () => {
+  return new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
 function App() {
   const [transactions, setTransactions] = useState([
     { id: 1, description: "Salary", amount: 5000, type: "income", category: "salary", date: "2025-01-01" },
@@ -34,13 +49,35 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Finance Tracker</h1>
-      <p className="subtitle">Track your income and expenses</p>
+      <header className="masthead">
+        <div className="masthead-meta">
+          <span>{formatIssue()}</span>
+          <span>{formatToday()}</span>
+          <span>Private Edition</span>
+        </div>
+        <div className="masthead-meta">
+          <span>est. mmxxv</span>
+        </div>
+      </header>
+
+      <h1 className="masthead-title">
+        The Ledger<span className="amp">&</span>Record
+      </h1>
+      <p className="subtitle">
+        A private account of what comes in, what goes out, and what remains &mdash;
+        kept honestly, tallied daily.
+      </p>
 
       <Summary transactions={transactions} />
       <SpendingByCategory transactions={transactions} />
       <TransactionForm categories={categories} onAdd={addTransaction} />
       <TransactionList transactions={transactions} categories={categories} onDelete={deleteTransaction} />
+
+      <footer className="app-footer">
+        <span>Kept by hand · No accounts, no cloud</span>
+        <span className="app-footer-mark">fin.</span>
+        <span>{transactions.length} entries on file</span>
+      </footer>
     </div>
   );
 }
