@@ -1,0 +1,1 @@
+- [Project Conventions](project_conventions.md) — Architecture, state ownership rules, amount-as-number fix, seed data quirk, CSS split
