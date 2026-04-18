@@ -23,7 +23,9 @@ function Summary({ transactions }) {
       </div>
       <div className="summary-card">
         <h3>Balance &mdash; net</h3>
-        <p className="balance-amount"><span className="currency">$</span>{fmt(balance)}</p>
+        <p className="balance-amount">
+          {balance < 0 && '−'}<span className="currency">$</span>{fmt(Math.abs(balance))}
+        </p>
       </div>
     </div>
   );

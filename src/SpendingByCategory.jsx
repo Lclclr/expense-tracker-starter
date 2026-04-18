@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import {
   BarChart,
   Bar,
@@ -20,6 +21,8 @@ const RISO_COLORS = [
 ];
 
 function SpendingByCategory({ transactions }) {
+  const uid = useId();
+
   const totalsByCategory = transactions
     .filter(t => t.type === "expense")
     .reduce((acc, t) => {
@@ -44,7 +47,7 @@ function SpendingByCategory({ transactions }) {
               {RISO_COLORS.map((c, i) => (
                 <pattern
                   key={i}
-                  id={`dots-${i}`}
+                  id={`${uid}-dots-${i}`}
                   x="0"
                   y="0"
                   width="6"
@@ -78,7 +81,7 @@ function SpendingByCategory({ transactions }) {
               {data.map((entry, i) => (
                 <Cell
                   key={entry.category}
-                  fill={`url(#dots-${i % RISO_COLORS.length})`}
+                  fill={`url(#${uid}-dots-${i % RISO_COLORS.length})`}
                   stroke="#1a1714"
                   strokeWidth={2}
                 />
