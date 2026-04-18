@@ -1,11 +1,5 @@
 import { useState } from 'react'
 
-const formatDate = (iso) => {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "2-digit" });
-};
-
 function TransactionList({ transactions, categories, onDelete }) {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
@@ -18,10 +12,12 @@ function TransactionList({ transactions, categories, onDelete }) {
     filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory);
   }
 
+  const fmt = (n) => n.toLocaleString('en-US');
+
   return (
-    <section className="transactions">
-      <div className="section-label" data-numeral="iv.">The Register</div>
-      <h2>Every entry, as it was written.</h2>
+    <div className="transactions">
+      <h2>The <em>full</em> record</h2>
+      <p className="transactions-sub">Every line, in chronological order, nothing hidden.</p>
       <div className="filters">
         <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All types</option>
@@ -36,49 +32,39 @@ function TransactionList({ transactions, categories, onDelete }) {
         </select>
       </div>
 
-      {filteredTransactions.length === 0 ? (
-        <div className="transactions-empty">
-          Nothing recorded under this view.
-        </div>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Entry</th>
-              <th>Category</th>
-              <th className="col-amount">Amount</th>
-              <th></th>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th style={{ textAlign: 'right' }}>Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredTransactions.map(t => (
+            <tr key={t.id}>
+              <td>{t.date}</td>
+              <td>{t.description}</td>
+              <td>{t.category}</td>
+              <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
+                {t.type === "income" ? "+" : "−"}${fmt(t.amount)}
+              </td>
+              <td>
+                <button
+                  onClick={() => {
+                    if (window.confirm("Tear this entry out?")) onDelete(t.id);
+                  }}
+                >
+                  Strike
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredTransactions.map(t => (
-              <tr key={t.id}>
-                <td className="cell-date">{formatDate(t.date)}</td>
-                <td className="cell-description">{t.description}</td>
-                <td className="cell-category">{t.category}</td>
-                <td className={`cell-amount col-amount ${t.type === "income" ? "income" : "expense"}`}>
-                  <span className="amt-sign">{t.type === "income" ? "+" : "−"}</span>
-                  ${t.amount.toLocaleString("en-US")}
-                </td>
-                <td>
-                  <button
-                    className="delete-btn"
-                    aria-label="Delete entry"
-                    title="Delete"
-                    onClick={() => {
-                      if (window.confirm("Strike this entry from the register?")) onDelete(t.id);
-                    }}
-                  >
-                    ×
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </section>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

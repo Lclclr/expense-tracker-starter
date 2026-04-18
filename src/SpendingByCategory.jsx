@@ -9,7 +9,15 @@ import {
   Cell,
 } from 'recharts';
 
-const PALETTE = ["#2d5a3d", "#8b3a1f", "#b8935a", "#4a6b52", "#a8642f", "#6b5230", "#3d5545"];
+const RISO_COLORS = [
+  "#ff4d6d", // riso pink
+  "#2b4cb3", // riso blue
+  "#ffc93a", // riso yellow
+  "#1f8a8a", // riso teal
+  "#ff8042", // warm orange
+  "#7a5cff", // ink violet
+  "#4a3f35", // ink soft
+];
 
 function SpendingByCategory({ transactions }) {
   const totalsByCategory = transactions
@@ -24,43 +32,62 @@ function SpendingByCategory({ transactions }) {
     .sort((a, b) => b.amount - a.amount);
 
   return (
-    <section className="chart">
-      <div className="section-label" data-numeral="ii.">Outflow by category</div>
-      <div className="chart-frame">
-        {data.length === 0 ? (
-          <p className="chart-empty">No expenses recorded yet.</p>
-        ) : (
-          <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={data} margin={{ top: 12, right: 16, bottom: 8, left: 0 }}>
-              <CartesianGrid vertical={false} strokeDasharray="2 4" />
-              <XAxis
-                dataKey="category"
-                tickLine={false}
-                axisLine={{ stroke: "#d4c9b5" }}
-                tick={{ textTransform: "uppercase" }}
-                dy={4}
-              />
-              <YAxis
-                tickFormatter={(v) => `$${v}`}
-                tickLine={false}
-                axisLine={false}
-                width={56}
-              />
-              <Tooltip
-                formatter={(value) => [`$${value.toLocaleString("en-US")}`, "Spent"]}
-                labelFormatter={(l) => l}
-                cursor={{ fill: "rgba(26,24,20,0.04)" }}
-              />
-              <Bar dataKey="amount" radius={[2, 2, 0, 0]} maxBarSize={64}>
-                {data.map((entry, i) => (
-                  <Cell key={entry.category} fill={PALETTE[i % PALETTE.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-      </div>
-    </section>
+    <div className="chart">
+      <h2>Where it <em style={{ fontFamily: '"Zodiak", serif', fontStyle: 'italic', color: 'var(--riso-blue)' }}>went</em></h2>
+      <p className="chart-sub">Expenses tallied by category, largest first &mdash; printed in two colors and change.</p>
+      {data.length === 0 ? (
+        <p className="chart-empty">No expenses yet. The page is blank; the pen is yours.</p>
+      ) : (
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={data} margin={{ top: 16, right: 12, bottom: 4, left: -8 }}>
+            <defs>
+              {RISO_COLORS.map((c, i) => (
+                <pattern
+                  key={i}
+                  id={`dots-${i}`}
+                  x="0"
+                  y="0"
+                  width="6"
+                  height="6"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <rect width="6" height="6" fill={c} />
+                  <circle cx="3" cy="3" r="1" fill="#1a1714" fillOpacity="0.12" />
+                </pattern>
+              ))}
+            </defs>
+            <CartesianGrid strokeDasharray="2 4" vertical={false} />
+            <XAxis
+              dataKey="category"
+              tickLine={false}
+              axisLine={{ stroke: '#1a1714', strokeWidth: 2 }}
+              tick={{ dy: 6 }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(v) => `$${v}`}
+              width={56}
+            />
+            <Tooltip
+              cursor={{ fill: 'rgba(26, 23, 20, 0.06)' }}
+              formatter={(value) => [`$${value.toLocaleString()}`, 'spent']}
+              separator=" — "
+            />
+            <Bar dataKey="amount" radius={[0, 0, 0, 0]}>
+              {data.map((entry, i) => (
+                <Cell
+                  key={entry.category}
+                  fill={`url(#dots-${i % RISO_COLORS.length})`}
+                  stroke="#1a1714"
+                  strokeWidth={2}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+    </div>
   );
 }
 

@@ -7,21 +7,6 @@ import TransactionList from './TransactionList'
 
 const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
 
-const formatIssue = () => {
-  const d = new Date();
-  const vol = d.getFullYear() - 2025 + 1;
-  const issue = d.getMonth() + 1;
-  return `Vol. ${String(vol).padStart(2, "0")} · No. ${String(issue).padStart(2, "0")}`;
-};
-
-const formatToday = () => {
-  return new Date().toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-};
-
 function App() {
   const [transactions, setTransactions] = useState([
     { id: 1, description: "Salary", amount: 5000, type: "income", category: "salary", date: "2025-01-01" },
@@ -47,36 +32,68 @@ function App() {
     setTransactions(transactions.filter(t => t.id !== id));
   };
 
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
   return (
     <div className="app">
       <header className="masthead">
-        <div className="masthead-meta">
-          <span>{formatIssue()}</span>
-          <span>{formatToday()}</span>
-          <span>Private Edition</span>
+        <div className="masthead-left">
+          <p className="eyebrow">Vol. I &nbsp;·&nbsp; Issue 04 &nbsp;·&nbsp; A zine about money</p>
+          <h1 className="title">The <em>Ledger</em></h1>
+          <p className="subtitle">
+            Field notes from the quiet arithmetic of everyday life &mdash; dollars in, dollars out, one honest row at a time.
+          </p>
         </div>
-        <div className="masthead-meta">
-          <span>est. mmxxv</span>
+        <div className="masthead-right">
+          <span className="issue">№ 04</span>
+          <span className="rule"></span>
+          <div>{today}</div>
+          <div>Pulp &amp; Ink Press</div>
         </div>
       </header>
 
-      <h1 className="masthead-title">
-        The Ledger<span className="amp">&</span>Record
-      </h1>
-      <p className="subtitle">
-        A private account of what comes in, what goes out, and what remains &mdash;
-        kept honestly, tallied daily.
-      </p>
+      <section>
+        <div className="section-label">
+          <span className="num">i.</span>
+          <span>The State of Things</span>
+          <span className="bar"></span>
+        </div>
+        <Summary transactions={transactions} />
+      </section>
 
-      <Summary transactions={transactions} />
-      <SpendingByCategory transactions={transactions} />
-      <TransactionForm categories={categories} onAdd={addTransaction} />
-      <TransactionList transactions={transactions} categories={categories} onDelete={deleteTransaction} />
+      <section>
+        <div className="section-label">
+          <span className="num">ii.</span>
+          <span>Where It Went</span>
+          <span className="bar"></span>
+        </div>
+        <SpendingByCategory transactions={transactions} />
+      </section>
 
-      <footer className="app-footer">
-        <span>Kept by hand · No accounts, no cloud</span>
-        <span className="app-footer-mark">fin.</span>
-        <span>{transactions.length} entries on file</span>
+      <section>
+        <div className="section-label">
+          <span className="num">iii.</span>
+          <span>Add an Entry</span>
+          <span className="bar"></span>
+        </div>
+        <TransactionForm categories={categories} onAdd={addTransaction} />
+      </section>
+
+      <section>
+        <div className="section-label">
+          <span className="num">iv.</span>
+          <span>The Full Record</span>
+          <span className="bar"></span>
+        </div>
+        <TransactionList transactions={transactions} categories={categories} onDelete={deleteTransaction} />
+      </section>
+
+      <footer className="colophon">
+        <span>Set in Gambarino &amp; Satoshi</span>
+        <span className="mark">&mdash; fin &mdash;</span>
+        <span>Printed in two colors</span>
       </footer>
     </div>
   );

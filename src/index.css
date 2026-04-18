@@ -1,24 +1,18 @@
 :root {
-  --paper: #f3ece0;
-  --paper-raised: #faf5eb;
-  --paper-sunken: #ece3d2;
-  --ink: #1a1814;
-  --ink-soft: #3d372e;
-  --muted: #7a7162;
-  --rule: #d4c9b5;
-  --rule-soft: #e2d9c7;
-  --green: #2d5a3d;
-  --green-deep: #1f4129;
-  --oxblood: #8b3a1f;
-  --oxblood-deep: #6a2a14;
-  --gold: #b8935a;
-  --gold-soft: #d4b88a;
+  --cream: #f2ecdc;
+  --cream-deep: #e8dfc7;
+  --ink: #1a1714;
+  --ink-soft: #4a3f35;
+  --riso-pink: #ff4d6d;
+  --riso-blue: #2b4cb3;
+  --riso-yellow: #ffc93a;
+  --riso-teal: #1f8a8a;
 
-  --font-display: "Fraunces", "Times New Roman", serif;
-  --font-body: "Instrument Sans", "Helvetica Neue", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Gambarino", "Zodiak", Georgia, serif;
+  --font-body: "Satoshi", system-ui, sans-serif;
 
-  color-scheme: light;
+  --border-thick: 2px solid var(--ink);
+  --border-hair: 1px solid var(--ink);
 }
 
 * {
@@ -27,38 +21,47 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  min-height: 100%;
-}
-
-body {
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.5;
+html, body {
+  background-color: var(--cream);
   color: var(--ink);
-  background: var(--paper);
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184, 147, 90, 0.08), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(45, 90, 61, 0.06), transparent 70%),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
-  background-attachment: fixed;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-feature-settings: "ss01", "ss02";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "ss01", "cv01", "cv11";
+  min-height: 100vh;
 }
 
-::selection {
-  background: var(--green);
-  color: var(--paper-raised);
+body {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255, 77, 109, 0.08) 0, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(43, 76, 179, 0.07) 0, transparent 45%),
+    radial-gradient(circle at 60% 10%, rgba(255, 201, 58, 0.06) 0, transparent 35%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
 button {
   font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-input,
-select {
+input, select {
   font-family: inherit;
-  color: inherit;
+}
+
+::selection {
+  background: var(--riso-pink);
+  color: var(--cream);
 }
